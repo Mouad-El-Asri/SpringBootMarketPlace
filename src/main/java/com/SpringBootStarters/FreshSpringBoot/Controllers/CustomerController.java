@@ -12,6 +12,9 @@ import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
 import com.SpringBootStarters.FreshSpringBoot.Services.CustomerService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
@@ -31,14 +34,32 @@ public class CustomerController {
 	 * @return the list of customers
 	 */
 	@GetMapping("/")
-	@Operation(summary = "Get all customers", description = "Get all customers data from the database")
+	@Operation(
+		summary = "Get all customers",
+		description = "Get all customers data from the database",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "The list of customers",
+				content = @Content(
+					mediaType = "application/json",
+					examples = {
+                        @ExampleObject(
+							name = "Customer Example 1",
+							value = "{\"id\": 1, \"firstName\": \"John\", \"lastName\": \"Wick\", \"email\": \"contact@gmail.com\", \"age\": 30}"
+						)
+                    }
+				)
+			)
+		}
+	)
 	public List<Customer> getCustomers() {
 		return this.customerService.getCustomers();
 	}
 
 	@PostMapping("/create")
 	@Operation(summary = "Create a new customer", description = "Create a new customer in the database")
-	public Customer postMethodName(@RequestBody Customer customer) {
+	public Customer createCustomer(@RequestBody Customer customer) {
 		return customer;
 	}
 }
