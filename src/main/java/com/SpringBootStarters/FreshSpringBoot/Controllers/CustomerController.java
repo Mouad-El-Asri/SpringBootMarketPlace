@@ -1,9 +1,15 @@
 package com.SpringBootStarters.FreshSpringBoot.Controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +18,6 @@ import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
 import com.SpringBootStarters.FreshSpringBoot.Services.CustomerService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(path = "api/v1/customers")
 @Tag(name = "Customer", description = "The customer API")
 public class CustomerController {
+	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 	private final CustomerService customerService;
 
 	public CustomerController(CustomerService customerService) {
@@ -30,7 +35,6 @@ public class CustomerController {
 
 	/**
 	 * Retrieves a list of customers.
-	 *
 	 * @return the list of customers
 	 */
 	@GetMapping("/")
@@ -40,26 +44,100 @@ public class CustomerController {
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-				description = "The list of customers",
-				content = @Content(
-					mediaType = "application/json",
-					examples = {
-                        @ExampleObject(
-							name = "Customer Example 1",
-							value = "{\"id\": 1, \"firstName\": \"John\", \"lastName\": \"Wick\", \"email\": \"contact@gmail.com\", \"age\": 30}"
-						)
-                    }
-				)
+				description = "The list of customers"
 			)
 		}
 	)
 	public List<Customer> getCustomers() {
+		logger.info("Getting all customers");
 		return this.customerService.getCustomers();
 	}
 
+
+	/**
+	 * Get customer by id
+	 * @param id The customer id
+	 * @return The customer instance
+	 */
+	@GetMapping("/{id}")
+	@Operation(
+		summary = "Get customer by id",
+		description = "Get customer data from the database",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "The customer"
+			)
+		}
+	)
+	public Optional<Customer> getCustomer(@PathVariable Long id) {
+		logger.info("Getting customer by id");
+		return this.customerService.getCustomer(id);
+	}
+
+
+	/**
+	 * Create a new customer
+	 * @param customer The customer to be created
+	 * @return The new customer
+	 */
 	@PostMapping("/create")
-	@Operation(summary = "Create a new customer", description = "Create a new customer in the database")
-	public Customer createCustomer(@RequestBody Customer customer) {
-		return customer;
+	@Operation(
+		summary = "Create a new customer",
+		description = "Create a new customer in the database",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "The created customer"
+			)
+		}
+	)
+	public void createCustomer(@RequestBody Customer customer) {
+		logger.info("Creating a new customer");
+		this.customerService.createCustomer(customer);
+	}
+
+
+	/**
+	 * Update a customer
+	 * @param id The customer's id
+	 * @param customer The customer to be updated
+	 * @return The updated customer
+	 */
+	@PutMapping("/update/{id}")
+	@Operation(
+		summary = "Update a customer",
+		description = "Update a customer in the database",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "The updated customer"
+			)
+		}
+	)
+	public Customer putMethodName(@PathVariable Long id, @RequestBody Customer customer) {
+		return this.customerService.updateCustomer(id, customer);
+	}
+
+
+	/**
+	 * Delete a customer
+	 * @param id The customer's id to be deleted
+	 * @return The deleted customer
+	 */
+	@DeleteMapping("/delete/{id}")
+	@Operation(
+		summary = "Delete a customer",
+		description = "Delete a customer from the database",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "The deleted customer"
+			)
+		}
+	)
+	public void deletedCustomer(@PathVariable long id) {
+		logger.info("Delete a customer");
+		this.customerService.deleteCustomer(id);
 	}
 }
