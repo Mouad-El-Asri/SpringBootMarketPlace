@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
 import com.SpringBootStarters.FreshSpringBoot.Repositories.CustomerRepository;
 
-import io.micrometer.common.lang.NonNull;
-
 @Service
 public class CustomerService {
 	private final CustomerRepository customerRepository;
@@ -54,9 +52,11 @@ public class CustomerService {
 	 * @param id The customer's id
 	 */
 	public void deleteCustomer(Long id) {
-		if (id == null) {
+		if (id == null)
 			throw new IllegalArgumentException("Customer id can't be null");
-		}
+		boolean exists = this.customerRepository.existsById(id);
+		if (!exists)
+			throw new IllegalStateException("Customer with id " + id + " doesn't exist");
 		this.customerRepository.deleteById(id);
 	}
 
