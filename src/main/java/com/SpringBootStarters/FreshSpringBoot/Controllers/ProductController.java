@@ -72,7 +72,7 @@ public class ProductController {
 			)
 		}
 	)
-	public Optional<Product> getProduct(@Valid @PathVariable long id) {
+	public Optional<Product> getProduct(@PathVariable("id") long id) {
 		logger.info("Get product by id");
 		return this.productService.getProduct(id);
 	}
@@ -116,7 +116,7 @@ public class ProductController {
 			)
 		}
 	)
-	public Product updateProduct(@Valid @PathVariable long id, @Valid @RequestBody Product product) {
+	public Product updateProduct(@PathVariable("id") long id, @Valid @RequestBody Product product) {
 		logger.info("Update product");
 		return this.productService.updateProduct(id, product);
 	}
@@ -136,7 +136,7 @@ public class ProductController {
 			)
 		}
 	)
-	public void deleteProduct(@Valid @PathVariable long id) {
+	public void deleteProduct(@PathVariable("id") long id) {
 		logger.info("Delete a product");
 		this.productService.deleteProduct(id);
 	}

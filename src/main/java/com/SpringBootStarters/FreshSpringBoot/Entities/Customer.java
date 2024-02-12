@@ -1,5 +1,7 @@
 package com.SpringBootStarters.FreshSpringBoot.Entities;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.CustomerDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,10 +49,21 @@ public class Customer {
 	 * @param email     the customer's email address
 	 * @param age       the customer's age
 	 */
-	public Customer(long id, String firstName, String lastName, String email, int age) {
+	public Customer(String firstName, String lastName, String email, int age) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.age = age;
+	}
+
+	/**
+	 * Constructs a new Customer object based on the provided CustomerDto.
+	 * @param customerDto The CustomerDto object containing the customer information.
+	 */
+	public Customer(CustomerDto customerDto) {
+		this.firstName = customerDto.getFirstName();
+		this.lastName = customerDto.getLastName();
+		this.email = customerDto.getEmail();
+		this.age = customerDto.getAge();
 	}
 }

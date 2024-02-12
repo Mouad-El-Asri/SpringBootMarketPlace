@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.CustomerDto;
 import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
 import com.SpringBootStarters.FreshSpringBoot.Services.CustomerService;
 
@@ -71,7 +72,7 @@ public class CustomerController {
 			)
 		}
 	)
-	public Optional<Customer> getCustomer(@Valid @PathVariable Long id) {
+	public Optional<Customer> getCustomer(@PathVariable("id") Long id) {
 		logger.info("Getting customer by id");
 		return this.customerService.getCustomer(id);
 	}
@@ -79,7 +80,7 @@ public class CustomerController {
 
 	/**
 	 * Create a new customer
-	 * @param customer The customer to be created
+	 * @param customerDto The DTO containing customer information
 	 * @return The new customer
 	 */
 	@PostMapping("/create")
@@ -93,9 +94,9 @@ public class CustomerController {
 			)
 		}
 	)
-	public Customer createCustomer(@Valid @RequestBody Customer customer) {
+	public Customer createCustomer(@Valid @RequestBody CustomerDto customerDto) {
 		logger.info("Creating a new customer");
-		return this.customerService.createCustomer(customer);
+		return this.customerService.createCustomer(customerDto);
 	}
 
 
@@ -116,9 +117,9 @@ public class CustomerController {
 			)
 		}
 	)
-	public Customer putMethodName(@Valid @PathVariable Long id, @Valid @RequestBody Customer customer) {
+	public Customer putMethodName(@PathVariable("id") Long id, @Valid @RequestBody CustomerDto customerDto) {
 		logger.info("Update customer by id");
-		return this.customerService.updateCustomer(id, customer);
+		return this.customerService.updateCustomer(id, customerDto);
 	}
 
 
@@ -136,7 +137,7 @@ public class CustomerController {
 			)
 		}
 	)
-	public void deletedCustomer(@Valid @PathVariable long id) {
+	public void deletedCustomer(@PathVariable("id") long id) {
 		logger.info("Delete a customer");
 		this.customerService.deleteCustomer(id);
 	}

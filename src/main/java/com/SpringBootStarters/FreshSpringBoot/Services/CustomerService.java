@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.CustomerDto;
 import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
 import com.SpringBootStarters.FreshSpringBoot.Repositories.CustomerRepository;
 
@@ -34,13 +35,14 @@ public class CustomerService {
 
 	/**
 	 * Create a new customer
-	 * @param customer The customer to create
+	 * @param customerDto The DTO containing customer information
 	 * @return The new customer
 	 */
-	public Customer createCustomer(Customer customer) {
-		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customer.getEmail());
+	public Customer createCustomer(CustomerDto customerDto) {
+		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customerDto.getEmail());
 		if (customerOptional.isPresent())
 			throw new IllegalStateException("Email already taken");
+		Customer customer = new Customer(customerDto);
 		return this.customerRepository.save(customer);
 	}
 
@@ -57,18 +59,18 @@ public class CustomerService {
 
 	/**
 	 * Update a customer
-	 * @param id The customer's id
-	 * @param customer The customer to update
+	 * @param id The customer id
+	 * @param customerDto The DTO containing customer information
 	 * @return The updated customer
 	 */
-	public Customer updateCustomer(long id, Customer customer) {
-		if (customer == null)
+	public Customer updateCustomer(long id, CustomerDto customerDto) {
+		if (customerDto == null)
 			throw new IllegalArgumentException("Customer can't be null");
 		Customer existingCustomer = this.customerRepository.findById(id).orElse(null);
-		existingCustomer.setFirstName(customer.getFirstName());
-		existingCustomer.setLastName(customer.getLastName());
-		existingCustomer.setEmail(customer.getEmail());
-		existingCustomer.setAge(customer.getAge());
+		existingCustomer.setFirstName(customerDto.getFirstName());
+		existingCustomer.setLastName(customerDto.getLastName());
+		existingCustomer.setEmail(customerDto.getEmail());
+		existingCustomer.setAge(customerDto.getAge());
 		return this.customerRepository.save(existingCustomer);
 	}
 }
