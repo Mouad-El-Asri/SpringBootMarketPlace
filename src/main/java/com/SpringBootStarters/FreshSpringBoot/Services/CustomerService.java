@@ -62,10 +62,11 @@ public class CustomerService {
 	 * @param id The customer id
 	 * @param customerDto The DTO containing customer information
 	 * @return The updated customer
+	 * @throws IllegalStateException if the customerDto is null
 	 */
 	public Customer updateCustomer(long id, CustomerDto customerDto) {
 		if (customerDto == null)
-			throw new IllegalArgumentException("Customer can't be null");
+			throw new IllegalStateException("Customer can't be null");
 		Customer existingCustomer = this.customerRepository.findById(id).orElse(null);
 		existingCustomer.setFirstName(customerDto.getFirstName());
 		existingCustomer.setLastName(customerDto.getLastName());

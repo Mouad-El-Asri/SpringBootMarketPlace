@@ -117,7 +117,7 @@ public class CustomerController {
 			)
 		}
 	)
-	public Customer putMethodName(@PathVariable("id") Long id, @Valid @RequestBody CustomerDto customerDto) {
+	public Customer updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerDto customerDto) {
 		logger.info("Update customer by id");
 		return this.customerService.updateCustomer(id, customerDto);
 	}

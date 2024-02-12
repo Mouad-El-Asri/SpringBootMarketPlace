@@ -106,7 +106,7 @@ public class ProductController {
 	 * @param productDto The DTO containing product information
 	 * @return The updated product
 	 */
-	@PutMapping("update/{id}")
+	@PutMapping("/update/{id}")
 	@Operation(
 		summary = "Update a product by its id",
 		description = "Update  aproduct and save it in the database",

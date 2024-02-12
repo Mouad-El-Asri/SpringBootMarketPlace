@@ -66,10 +66,11 @@ public class ProductService {
 	 * @param id      The ID of the product to update
 	 * @param productDto The product DTO containing product information
 	 * @return The updated product
+	 * @throws IllegalStateException if the productDto is null
 	 */
 	public Product updateProduct(long id, ProductDto productDto) {
 		if (productDto == null)
-			throw new IllegalArgumentException("Product can't be null");
+			throw new IllegalStateException("Product can't be null");
 		Product existingProduct = this.productRepository.findById(id).orElse(null);
 		existingProduct.setProductName(productDto.getProductName());
 		existingProduct.setPrice(productDto.getPrice());
