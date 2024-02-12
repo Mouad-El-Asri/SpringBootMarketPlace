@@ -28,9 +28,7 @@ public class CustomerService {
 	 * @param id The customer's id
 	 * @return The customer instance
 	 */
-	public Optional<Customer> getCustomer(Long id) {
-		if (id == null)
-			throw new IllegalArgumentException("Customer id can't be null");
+	public Optional<Customer> getCustomer(long id) {
 		return this.customerRepository.findById(id);
 	}
 
@@ -39,21 +37,18 @@ public class CustomerService {
 	 * @param customer The customer to create
 	 * @return The new customer
 	 */
-	public void createCustomer(Customer customer) {
+	public Customer createCustomer(Customer customer) {
 		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customer.getEmail());
-		if (customerOptional.isPresent()) {
+		if (customerOptional.isPresent())
 			throw new IllegalStateException("Email already taken");
-		}
-		this.customerRepository.save(customer);
+		return this.customerRepository.save(customer);
 	}
 
 	/**
 	 * Delete a customer by id
 	 * @param id The customer's id
 	 */
-	public void deleteCustomer(Long id) {
-		if (id == null)
-			throw new IllegalArgumentException("Customer id can't be null");
+	public void deleteCustomer(long id) {
 		boolean exists = this.customerRepository.existsById(id);
 		if (!exists)
 			throw new IllegalStateException("Customer with id " + id + " doesn't exist");
@@ -66,9 +61,9 @@ public class CustomerService {
 	 * @param customer The customer to update
 	 * @return The updated customer
 	 */
-	public Customer updateCustomer(Long id, Customer customer) {
-		if (customer == null || id == null)
-			throw new IllegalArgumentException("Customer and id can't be null");
+	public Customer updateCustomer(long id, Customer customer) {
+		if (customer == null)
+			throw new IllegalArgumentException("Customer can't be null");
 		Customer existingCustomer = this.customerRepository.findById(id).orElse(null);
 		existingCustomer.setFirstName(customer.getFirstName());
 		existingCustomer.setLastName(customer.getLastName());

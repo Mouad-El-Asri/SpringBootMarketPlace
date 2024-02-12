@@ -20,6 +20,7 @@ import com.SpringBootStarters.FreshSpringBoot.Services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -35,7 +36,7 @@ public class CustomerController {
 
 	/**
 	 * Retrieves a list of customers.
-	 * @return the list of customers
+	 * @return The list of customers
 	 */
 	@GetMapping("/")
 	@Operation(
@@ -70,7 +71,7 @@ public class CustomerController {
 			)
 		}
 	)
-	public Optional<Customer> getCustomer(@PathVariable Long id) {
+	public Optional<Customer> getCustomer(@Valid @PathVariable Long id) {
 		logger.info("Getting customer by id");
 		return this.customerService.getCustomer(id);
 	}
@@ -88,13 +89,13 @@ public class CustomerController {
 		responses = {
 			@ApiResponse(
 				responseCode = "201",
-				description = "The created customer"
+				description = "The new created customer"
 			)
 		}
 	)
-	public void createCustomer(@RequestBody Customer customer) {
+	public Customer createCustomer(@Valid @RequestBody Customer customer) {
 		logger.info("Creating a new customer");
-		this.customerService.createCustomer(customer);
+		return this.customerService.createCustomer(customer);
 	}
 
 
@@ -115,7 +116,8 @@ public class CustomerController {
 			)
 		}
 	)
-	public Customer putMethodName(@PathVariable Long id, @RequestBody Customer customer) {
+	public Customer putMethodName(@Valid @PathVariable Long id, @Valid @RequestBody Customer customer) {
+		logger.info("Update customer by id");
 		return this.customerService.updateCustomer(id, customer);
 	}
 
@@ -123,7 +125,6 @@ public class CustomerController {
 	/**
 	 * Delete a customer
 	 * @param id The customer's id to be deleted
-	 * @return The deleted customer
 	 */
 	@DeleteMapping("/delete/{id}")
 	@Operation(
@@ -131,12 +132,11 @@ public class CustomerController {
 		description = "Delete a customer from the database",
 		responses = {
 			@ApiResponse(
-				responseCode = "200",
-				description = "The deleted customer"
+				responseCode = "200"
 			)
 		}
 	)
-	public void deletedCustomer(@PathVariable long id) {
+	public void deletedCustomer(@Valid @PathVariable long id) {
 		logger.info("Delete a customer");
 		this.customerService.deleteCustomer(id);
 	}
