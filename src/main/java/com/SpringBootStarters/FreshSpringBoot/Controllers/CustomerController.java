@@ -103,7 +103,7 @@ public class CustomerController {
 	/**
 	 * Update a customer
 	 * @param id The customer's id
-	 * @param customer The customer to be updated
+	 * @param customerDto The customer DTO containing customer information to be updated
 	 * @return The updated customer
 	 */
 	@PutMapping("/update/{id}")

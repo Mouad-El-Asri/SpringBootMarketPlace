@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.ProductDto;
 import com.SpringBootStarters.FreshSpringBoot.Entities.Product;
 import com.SpringBootStarters.FreshSpringBoot.Services.ProductService;
 
@@ -80,7 +81,7 @@ public class ProductController {
 
 	/**
 	 * Create a new product
-	 * @param product The product to be created
+	 * @param productDto The Product DTO containg the new product information
 	 * @return The new created product
 	 */
 	@PostMapping("/create")
@@ -94,15 +95,15 @@ public class ProductController {
 			)
 		}
 	)
-	public Product createProduct(@NonNull @Valid @RequestBody Product product) {
+	public Product createProduct(@NonNull @Valid @RequestBody ProductDto productDto) {
 		logger.info("Create a new product");
-		return this.productService.createProduct(product);
+		return this.productService.createProduct(productDto);
 	}
 
 	/**
 	 * Updates a product by its id and saves it in the database
 	 * @param id      The id of the product to be updated
-	 * @param product The updated product object
+	 * @param productDto The DTO containing product information
 	 * @return The updated product
 	 */
 	@PutMapping("update/{id}")
@@ -116,9 +117,9 @@ public class ProductController {
 			)
 		}
 	)
-	public Product updateProduct(@PathVariable("id") long id, @Valid @RequestBody Product product) {
+	public Product updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDto productDto) {
 		logger.info("Update product");
-		return this.productService.updateProduct(id, product);
+		return this.productService.updateProduct(id, productDto);
 	}
 
 

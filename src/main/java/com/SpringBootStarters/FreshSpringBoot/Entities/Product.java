@@ -1,5 +1,7 @@
 package com.SpringBootStarters.FreshSpringBoot.Entities;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.ProductDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,9 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Product")
 public class Product {
@@ -36,12 +38,11 @@ public class Product {
 	private long price;
 
 	/**
-	 * Constructs a new Product object with the specified properties
-	 * @param productName The Product name
-	 * @param price The Product price
+	 * Constructs a new Product object based on the provided ProductDto.
+	 * @param productDto The ProductDto object containing the Product information.
 	 */
-	public Product(String productName, long price) {
-		this.productName = productName;
-		this.price = price;
+	public Product(ProductDto productDto) {
+		this.productName = productDto.getProductName();
+		this.price = productDto.getPrice();
 	}
 }

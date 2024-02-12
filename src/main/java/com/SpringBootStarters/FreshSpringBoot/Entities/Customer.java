@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Customer")
 public class Customer {
@@ -41,20 +43,6 @@ public class Customer {
 
 	@Positive(message = "Customer age must be a positive number")
 	private int age;
-
-	/**
-	 * Constructs a new Customer object with the specified properties.
-	 * @param firstName the customer's first name
-	 * @param lastName  the customer's last name
-	 * @param email     the customer's email address
-	 * @param age       the customer's age
-	 */
-	public Customer(String firstName, String lastName, String email, int age) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.age = age;
-	}
 
 	/**
 	 * Constructs a new Customer object based on the provided CustomerDto.

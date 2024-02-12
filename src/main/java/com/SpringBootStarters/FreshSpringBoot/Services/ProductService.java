@@ -3,8 +3,11 @@ package com.SpringBootStarters.FreshSpringBoot.Services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import org.springframework.stereotype.Service;
 
+import com.SpringBootStarters.FreshSpringBoot.DTOs.ProductDto;
 import com.SpringBootStarters.FreshSpringBoot.Entities.Product;
 import com.SpringBootStarters.FreshSpringBoot.Repositories.ProductRepository;
 
@@ -49,23 +52,27 @@ public class ProductService {
 	 * @param product the product to be created
 	 * @return the created product
 	 */
-	public Product createProduct(@NonNull Product product) {
+	public Product createProduct(@NonNull ProductDto productDto) {
+		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
+		if (productOptional.isPresent())
+			throw new IllegalStateException("Product already exists");
+		Product product = new Product(productDto);
 		return this.productRepository.save(product);
 	}
 
 
 	/**
 	 * Updates a product with the given ID.
-	 * @param id      the ID of the product to update
-	 * @param product the updated product object
-	 * @return the updated product
+	 * @param id      The ID of the product to update
+	 * @param productDto The product DTO containing product information
+	 * @return The updated product
 	 */
-	public Product updateProduct(long id, Product product) {
-		if (product == null)
+	public Product updateProduct(long id, ProductDto productDto) {
+		if (productDto == null)
 			throw new IllegalArgumentException("Product can't be null");
 		Product existingProduct = this.productRepository.findById(id).orElse(null);
-		existingProduct.setProductName(product.getProductName());
-		existingProduct.setPrice(product.getPrice());
+		existingProduct.setProductName(productDto.getProductName());
+		existingProduct.setPrice(productDto.getPrice());
 		return this.productRepository.save(existingProduct);
 	}
 
