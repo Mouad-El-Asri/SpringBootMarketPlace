@@ -1,4 +1,6 @@
-package com.SpringBootStarters.FreshSpringBoot.DTOs;
+package com.SpringBootStarters.MarketPlace.DTOs;
+
+import java.math.BigDecimal;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,5 +22,5 @@ public class ProductDto {
 	private String productName;
 
 	@Positive(message = "Price must be a positive number")
-	private long price;
+	private BigDecimal price;
 }

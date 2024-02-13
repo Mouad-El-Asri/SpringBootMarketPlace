@@ -1,10 +1,10 @@
-package com.SpringBootStarters.FreshSpringBoot;
+package com.SpringBootStarters.MarketPlace;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FreshSpringBootApplicationTests {
+class MarketPlaceApplicationTests {
 
 	@Test
 	void contextLoads() {

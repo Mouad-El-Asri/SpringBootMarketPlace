@@ -1,4 +1,4 @@
-package com.SpringBootStarters.FreshSpringBoot;
+package com.SpringBootStarters.MarketPlace;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-public class FreshSpringBootApplication {
-	private static final Logger logger = LoggerFactory.getLogger(FreshSpringBootApplication.class);
+public class MarketPlace {
+	private static final Logger logger = LoggerFactory.getLogger(MarketPlace.class);
 
 	public static void main(String[] args) {
-		logger.info("Starting FreshSpringBootApplication");
-		SpringApplication.run(FreshSpringBootApplication.class, args);
+		logger.info("Starting MarketPlaceApplication");
+		SpringApplication.run(MarketPlace.class, args);
 	}
 }

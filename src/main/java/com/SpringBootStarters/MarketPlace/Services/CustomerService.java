@@ -1,13 +1,13 @@
-package com.SpringBootStarters.FreshSpringBoot.Services;
+package com.SpringBootStarters.MarketPlace.Services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.SpringBootStarters.FreshSpringBoot.DTOs.CustomerDto;
-import com.SpringBootStarters.FreshSpringBoot.Entities.Customer;
-import com.SpringBootStarters.FreshSpringBoot.Repositories.CustomerRepository;
+import com.SpringBootStarters.MarketPlace.DTOs.CustomerDto;
+import com.SpringBootStarters.MarketPlace.Entities.Customer;
+import com.SpringBootStarters.MarketPlace.Repositories.CustomerRepository;
 
 @Service
 public class CustomerService {
@@ -19,13 +19,16 @@ public class CustomerService {
 
 	/**
 	 * Retrieves a list of customers.
+	 * 
 	 * @return the list of customers
 	 */
 	public List<Customer> getCustomers() {
 		return this.customerRepository.findAll();
 	}
 
-	/** Get customer by id
+	/**
+	 * Get customer by id
+	 * 
 	 * @param id The customer's id
 	 * @return The customer instance
 	 */
@@ -35,6 +38,7 @@ public class CustomerService {
 
 	/**
 	 * Create a new customer
+	 * 
 	 * @param customerDto The DTO containing customer information
 	 * @return The new customer
 	 */
@@ -48,6 +52,7 @@ public class CustomerService {
 
 	/**
 	 * Delete a customer by id
+	 * 
 	 * @param id The customer's id
 	 */
 	public void deleteCustomer(long id) {
@@ -59,7 +64,8 @@ public class CustomerService {
 
 	/**
 	 * Update a customer
-	 * @param id The customer id
+	 * 
+	 * @param id          The customer id
 	 * @param customerDto The DTO containing customer information
 	 * @return The updated customer
 	 * @throws IllegalStateException if the customerDto is null

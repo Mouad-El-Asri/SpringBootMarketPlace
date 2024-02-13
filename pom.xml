@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.SpringBootStarters</groupId>
-	<artifactId>FreshSpringBoot</artifactId>
+	<artifactId>MarketPlace</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FreshSpringBoot</name>
-	<description>FreshSpringBoot is a beginner-friendly Spring Boot application aimed at providing hands-on experience and foundational knowledge in building Java web applications.</description>
+	<name>MarketPlace</name>
+	<description>MarketPlace is a beginner-friendly Spring Boot application aimed at providing hands-on experience and foundational knowledge in building Java web applications.</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>

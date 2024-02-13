@@ -1,4 +1,4 @@
-package com.SpringBootStarters.FreshSpringBoot.Services;
+package com.SpringBootStarters.MarketPlace.Services;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +7,9 @@ import javax.swing.text.html.Option;
 
 import org.springframework.stereotype.Service;
 
-import com.SpringBootStarters.FreshSpringBoot.DTOs.ProductDto;
-import com.SpringBootStarters.FreshSpringBoot.Entities.Product;
-import com.SpringBootStarters.FreshSpringBoot.Repositories.ProductRepository;
+import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
+import com.SpringBootStarters.MarketPlace.Entities.Product;
+import com.SpringBootStarters.MarketPlace.Repositories.ProductRepository;
 
 import jakarta.validation.Valid;
 
@@ -23,7 +23,6 @@ public class ProductService {
 		this.productRepository = productRepository;
 	}
 
-
 	/**
 	 * Retrieve a list of all the products
 	 * 
@@ -32,7 +31,6 @@ public class ProductService {
 	public List<Product> getProducts() {
 		return this.productRepository.findAll();
 	}
-
 
 	/**
 	 * Retrieves a product by its ID.
@@ -44,7 +42,6 @@ public class ProductService {
 	public Optional<Product> getProduct(long id) {
 		return this.productRepository.findById(id);
 	}
-
 
 	/**
 	 * Creates a new product and saves it to the database.
@@ -60,10 +57,10 @@ public class ProductService {
 		return this.productRepository.save(product);
 	}
 
-
 	/**
 	 * Updates a product with the given ID.
-	 * @param id      The ID of the product to update
+	 * 
+	 * @param id         The ID of the product to update
 	 * @param productDto The product DTO containing product information
 	 * @return The updated product
 	 * @throws IllegalStateException if the productDto is null
@@ -77,9 +74,9 @@ public class ProductService {
 		return this.productRepository.save(existingProduct);
 	}
 
-
 	/**
 	 * Deletes a product with the specified ID.
+	 * 
 	 * @param id the ID of the product to be deleted
 	 */
 	public void deleteProduct(long id) {

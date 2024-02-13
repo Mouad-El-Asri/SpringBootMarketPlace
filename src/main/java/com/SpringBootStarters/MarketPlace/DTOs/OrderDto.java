@@ -1,4 +1,4 @@
-package com.SpringBootStarters.FreshSpringBoot.DTOs;
+package com.SpringBootStarters.MarketPlace.DTOs;
 
 import java.math.BigDecimal;
 
