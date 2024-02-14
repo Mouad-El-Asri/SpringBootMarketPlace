@@ -5,13 +5,11 @@ import java.util.List;
 
 import com.SpringBootStarters.MarketPlace.DTOs.CustomerDto;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -59,12 +57,8 @@ public class Customer {
 	@Column(name = "age", nullable = false)
 	private int age;
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-	private List<Order> orders = new ArrayList<>();
-
 	/**
 	 * Constructs a new Customer object based on the provided CustomerDto.
-	 * 
 	 * @param customerDto The CustomerDto object containing the customer
 	 *                    information.
 	 */

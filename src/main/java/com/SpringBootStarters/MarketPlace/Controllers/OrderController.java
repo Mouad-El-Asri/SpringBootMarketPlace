@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SpringBootStarters.MarketPlace.DTOs.OrderDto;
-import com.SpringBootStarters.MarketPlace.Entities.Order;
+import com.SpringBootStarters.MarketPlace.Entities.Orders;
 import com.SpringBootStarters.MarketPlace.Services.OrderService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/orders")
@@ -35,14 +36,13 @@ public class OrderController {
 
 	/**
 	 * Retrieves a list of orders from the database.
-	 * 
 	 * @return List of orders
 	 */
 	@GetMapping("/")
 	@Operation(summary = "Get a list of orders", description = "Get a list of all the orders from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "List of all orders")
 	})
-	public List<Order> getOrders() {
+	public List<Orders> getOrders() {
 		logger.info("Getting all orders");
 		return this.orderService.getOrders();
 	}
@@ -58,23 +58,28 @@ public class OrderController {
 	@Operation(summary = "Get order by its id", description = "Get order using its id from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order data returned")
 	})
-	public Optional<Order> getOrder(@PathVariable("id") long id) {
+	public Optional<Orders> getOrder(@PathVariable("id") long id) {
 		logger.info("Getting a single order by its id");
 		return this.orderService.getOrder(id);
 	}
 
-	@PostMapping("/create")
+	/**
+	 * Creates a new order and saves it in the database.
+	 * @param id the ID of the customer placing the order
+	 * @param orderDto   the order details
+	 * @return the created order
+	 */
+	@PostMapping("/create/{id}")
 	@Operation(summary = "Create new order", description = "Create a new order and save it in the database", responses = {
 			@ApiResponse(responseCode = "201", description = "Order created successfully")
 	})
-	public Order createOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
+	public Orders createOrder(@PathVariable("id") long id, @Valid @RequestBody OrderDto orderDto) {
 		logger.info("Create new order");
 		return this.orderService.createOrder(id, orderDto);
 	}
 
 	/**
 	 * Updates an order by its id and saves it in the database
-	 * 
 	 * @param id       The id of the order to be updated
 	 * @param orderDto The updated order DTO
 	 * @return The updated order
@@ -83,14 +88,13 @@ public class OrderController {
 	@Operation(summary = "Update an order by its id", description = "Update an order by id and save it in the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order updated successfully")
 	})
-	public Order updateOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
+	public Orders updateOrder(@PathVariable("id") long id, @Valid @RequestBody OrderDto orderDto) {
 		logger.info("Update an existing order");
 		return this.orderService.updateOrder(id, orderDto);
 	}
 
 	/**
 	 * Delete an order by id from the database.
-	 * 
 	 * @param id The id of the order to be deleted.
 	 */
 	@DeleteMapping("/delete/{id}")

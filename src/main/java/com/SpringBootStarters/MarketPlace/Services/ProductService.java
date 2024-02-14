@@ -3,15 +3,11 @@ package com.SpringBootStarters.MarketPlace.Services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
-
 import org.springframework.stereotype.Service;
 
 import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
 import com.SpringBootStarters.MarketPlace.Entities.Product;
 import com.SpringBootStarters.MarketPlace.Repositories.ProductRepository;
-
-import jakarta.validation.Valid;
 
 import org.springframework.lang.NonNull;
 

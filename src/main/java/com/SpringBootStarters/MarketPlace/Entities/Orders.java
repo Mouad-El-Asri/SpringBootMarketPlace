@@ -24,8 +24,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "Order")
-public class Order {
+@Table(name = "Orders")
+public class Orders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull(message = "Id must not be null")
@@ -41,23 +41,21 @@ public class Order {
 	private BigDecimal totalAmount;
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id", nullable = false)
-	@NotNull(message = "Order customer must not be null")
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
 	/**
 	 * Constructs a new Order object with the current date and time
 	 */
-	public Order() {
+	public Orders() {
 		this.date = LocalDateTime.now();
 	}
 
 	/**
 	 * Constructs a new Order object based on the provided OrderDto
-	 * 
 	 * @param orderDto The OrderDto object containing the order details
 	 */
-	public Order(OrderDto orderDto) {
+	public Orders(OrderDto orderDto) {
 		this.date = LocalDateTime.now();
 		this.totalAmount = orderDto.getTotalAmount();
 	}

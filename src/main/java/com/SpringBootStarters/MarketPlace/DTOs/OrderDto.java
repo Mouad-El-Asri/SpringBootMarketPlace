@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This class represents the data transfer object (DTO) for an order.
+ * It contains the total amount of the order.
+ */
 @Setter
 @Getter
 public class OrderDto {

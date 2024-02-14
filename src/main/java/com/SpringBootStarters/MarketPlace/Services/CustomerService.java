@@ -19,7 +19,6 @@ public class CustomerService {
 
 	/**
 	 * Retrieves a list of customers.
-	 * 
 	 * @return the list of customers
 	 */
 	public List<Customer> getCustomers() {
