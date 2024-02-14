@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.SpringBootStarters.MarketPlace.DTOs.OrderDto;
 import com.SpringBootStarters.MarketPlace.Entities.Customer;
 import com.SpringBootStarters.MarketPlace.Entities.Orders;
 import com.SpringBootStarters.MarketPlace.Repositories.CustomerRepository;
@@ -42,35 +41,18 @@ public class OrderService {
 	/**
 	 * Creates a new order based on the provided order data.
 	 * @param customerId The customer Id
-	 * @param orderDto The order data used to create the order
 	 * @return The created order
 	 */
-	public Orders createOrder(long customerId, OrderDto orderDto) {
+	public Orders createOrder(long customerId) {
 		Optional<Customer> customerOptional = this.customerRepository.findById(customerId);
 		if (customerOptional.isPresent()) {
 			Customer customer = customerOptional.get();
-			Orders newOrder = new Orders(orderDto);
+			Orders newOrder = new Orders();
 			newOrder.setCustomer(customer);
 			return this.orderRepository.save(newOrder);
 		} else {
 			throw new IllegalStateException("Customer not found with Id : " + customerId);
 		}
-	}
-
-	/**
-	 * Updates an existing order with the provided order details.
-	 * 
-	 * @param id       The ID of the order to be updated.
-	 * @param orderDto The updated order details.
-	 * @return The updated order.
-	 * @throws IllegalStateException if the orderDto is null.
-	 */
-	public Orders updateOrder(long id, OrderDto orderDto) {
-		if (orderDto == null)
-			throw new IllegalStateException("Order can't be null");
-		Orders exsitngOrder = this.orderRepository.findById(id).orElse(null);
-		exsitngOrder.setTotalAmount(orderDto.getTotalAmount());
-		return this.orderRepository.save(exsitngOrder);
 	}
 
 	/**

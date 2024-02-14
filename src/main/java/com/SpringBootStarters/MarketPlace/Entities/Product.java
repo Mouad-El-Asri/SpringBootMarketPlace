@@ -1,14 +1,19 @@
 package com.SpringBootStarters.MarketPlace.Entities;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -45,6 +50,9 @@ public class Product {
 	@Positive(message = "Price must be a positive number")
 	@Column(name = "price", precision = 10, scale = 2)
 	private BigDecimal price;
+
+	@ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
+	private List<Orders> orders;
 
 	/**
 	 * Constructs a new Product object based on the provided ProductDto.
