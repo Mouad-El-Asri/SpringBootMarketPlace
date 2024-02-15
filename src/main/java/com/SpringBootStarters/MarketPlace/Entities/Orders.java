@@ -2,6 +2,7 @@ package com.SpringBootStarters.MarketPlace.Entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -52,7 +53,7 @@ public class Orders {
 		joinColumns = @JoinColumn(name = "order_id"),
 		inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
-	private List<Product> products;
+	private List<Product> products = new ArrayList<>();
 
 	/**
 	 * Constructs a new Order object with the current date and time

@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SpringBootStarters.MarketPlace.DTOs.OrderDto;
 import com.SpringBootStarters.MarketPlace.Entities.Orders;
 import com.SpringBootStarters.MarketPlace.Services.OrderService;
 
@@ -63,15 +65,16 @@ public class OrderController {
 	/**
 	 * Creates a new order and saves it in the database.
 	 * @param id the ID of the customer placing the order
+	 * @param orderDto the order data
 	 * @return the created order
 	 */
 	@PostMapping("/createOrder/{id}")
 	@Operation(summary = "Create new order for a certain customer", description = "Create a new order for a customer and save it in the database", responses = {
 			@ApiResponse(responseCode = "201", description = "Order created successfully")
 	})
-	public Orders createOrder(@PathVariable("id") long id) {
+	public Orders createOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
 		logger.info("Create new order for customer with id: " + id);
-		return this.orderService.createOrder(id);
+		return this.orderService.createOrder(id, orderDto);
 	}
 
 

@@ -1,9 +1,11 @@
 package com.SpringBootStarters.MarketPlace.Entities;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,7 +54,8 @@ public class Product {
 	private BigDecimal price;
 
 	@ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
-	private List<Orders> orders;
+	@JsonIgnore
+	private List<Orders> orders = new ArrayList<>();
 
 	/**
 	 * Constructs a new Product object based on the provided ProductDto.
