@@ -1,5 +1,6 @@
 package com.SpringBootStarters.MarketPlace.Services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,9 +66,12 @@ public class OrderService {
 			Customer customer = customerOptional.get();
 			Orders newOrder = new Orders();
 			newOrder.setCustomer(customer);
+			BigDecimal totalAmount = BigDecimal.ZERO;
 			for (Product product : products) {
 				newOrder.getProducts().add(product);
+				totalAmount = totalAmount.add(product.getPrice());
 			}
+			newOrder.setTotalAmount(totalAmount);
 			return this.orderRepository.save(newOrder);
 		} else {
 			throw new IllegalStateException("Customer not found with Id : " + customerId);
@@ -85,11 +89,14 @@ public class OrderService {
 		List<Product> products = this.productRepository.findAllById(orderDto.getProductIds());
 		if (orderOptional.isPresent()) {
 			Orders existingOrder = orderOptional.get();
+			BigDecimal totalAmount = existingOrder.getTotalAmount();
 			for (Product product : products) {
 				if (!existingOrder.getProducts().contains(product)) {
 					existingOrder.getProducts().add(product);
+					totalAmount = totalAmount.add(product.getPrice());
 				}
 			}
+			existingOrder.setTotalAmount(totalAmount);
 			return this.orderRepository.save(existingOrder);
 		} else {
 			throw new IllegalStateException("Order not found with Id : " + id);
