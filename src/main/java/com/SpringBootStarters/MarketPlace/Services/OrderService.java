@@ -65,6 +65,30 @@ public class OrderService {
 		}
 	}
 
+
+	/**
+	 * Updates an order with the specified ID.
+	 * @param id The ID of the order to update
+	 * @param orderDto The order dto containing products to be added to the order
+	 * @return The updated order
+	 */
+	public Orders updateOrder(long id, OrderDto orderDto) {
+		Optional<Orders> orderOptional = this.orderRepository.findById(id);
+		List<Product> products = this.productRepository.findAllById(orderDto.getProductIds());
+		if (orderOptional.isPresent()) {
+			Orders existingOrder = orderOptional.get();
+			for (Product product : products) {
+				if (!existingOrder.getProducts().contains(product)) {
+					existingOrder.getProducts().add(product);
+				}
+			}
+			return this.orderRepository.save(existingOrder);
+		} else {
+			throw new IllegalStateException("Order not found with Id : " + id);
+		}
+	}
+
+
 	/**
 	 * Deletes an order with the specified ID.
 	 * @param id The ID of the order to delete

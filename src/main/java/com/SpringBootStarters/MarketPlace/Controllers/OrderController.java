@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,6 +76,22 @@ public class OrderController {
 	public Orders createOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
 		logger.info("Create new order for customer with id: " + id);
 		return this.orderService.createOrder(id, orderDto);
+	}
+
+
+	/**
+	 * Update an order by id from the database
+	 * @param id The id of the order to be updated
+	 * @param orderDto The order dto containing products to be added to the order
+	 * @return The updated order
+	 */
+	@PutMapping("/updateOrder/{id}")
+	@Operation(summary = "Update an order", description = "Update an order by id from the database", responses = {
+			@ApiResponse(responseCode = "200", description = "Order updated successfully")
+	})
+	public Orders updateOrders(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
+		logger.info("Adding new products to an exsiting order");
+		return this.orderService.updateOrder(id, orderDto);
 	}
 
 
