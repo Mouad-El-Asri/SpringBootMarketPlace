@@ -44,6 +44,15 @@ public class OrderService {
 	}
 
 	/**
+	 * Retrieves a list of orders for a given product.
+	 * @param id The ID of the product
+	 * @return A list of Order objects representing the orders for the product
+	 */
+	public List<Orders> getOrdersByProductId(long id) {
+		return this.orderRepository.findByProductsId(id);
+	}
+
+	/**
 	 * Creates a new order based on the provided order data.
 	 * @param customerId The customer Id
 	 * @param orderDto The order data
@@ -64,7 +73,6 @@ public class OrderService {
 			throw new IllegalStateException("Customer not found with Id : " + customerId);
 		}
 	}
-
 
 	/**
 	 * Updates an order with the specified ID.
@@ -88,12 +96,20 @@ public class OrderService {
 		}
 	}
 
-
 	/**
 	 * Deletes an order with the specified ID.
 	 * @param id The ID of the order to delete
 	 */
 	public void deleteOrder(long id) {
 		this.orderRepository.deleteById(id);
+	}
+
+	/**
+	 * Retrieves a list of orders for a given customer.
+	 * @param id The ID of the customer
+	 * @return A list of Order objects representing the orders for the customer
+	 */
+	public List<Orders> getOrdersByCustomerId(long id) {
+		return this.orderRepository.findByCustomerId(id);
 	}
 }

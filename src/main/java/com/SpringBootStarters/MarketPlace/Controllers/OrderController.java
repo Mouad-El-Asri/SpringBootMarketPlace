@@ -48,7 +48,6 @@ public class OrderController {
 
 	/**
 	 * Retrieves an order from the database based on its id.
-	 * 
 	 * @param id The id of the order to retrieve.
 	 * @return An Optional containing the order if found, or an empty Optional if
 	 *         not found.
@@ -62,6 +61,28 @@ public class OrderController {
 		return this.orderService.getOrder(id);
 	}
 
+	/**
+	 * Retrieves a list of orders by product id.
+	 * @param id The id of the product
+	 * @return A list of orders
+	 */
+	@GetMapping("/product/{id}")
+	@Operation(summary = "Get orders by product id", description = "Get a list of orders by product id", responses = {
+			@ApiResponse(responseCode = "200", description = "List of orders")
+	})
+	public List<Orders> getOrdersByProductId(@PathVariable("id") long id) {
+		logger.info("Getting a list of orders by product id");
+		return this.orderService.getOrdersByProductId(id);
+	}
+
+	@GetMapping("/customer/{id}")
+	@Operation(summary = "Get orders by customer id", description = "Get a list of orders by customer id", responses = {
+			@ApiResponse(responseCode = "200", description = "List of orders")
+	})
+	public List<Orders> getOrdersByCustomerId(@PathVariable("id") long id) {
+		logger.info("Getting a list of orders by customer id");
+		return this.orderService.getOrdersByCustomerId(id);
+	}
 
 	/**
 	 * Creates a new order and saves it in the database.

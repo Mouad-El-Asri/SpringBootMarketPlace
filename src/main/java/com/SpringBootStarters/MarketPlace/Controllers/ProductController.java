@@ -64,6 +64,22 @@ public class ProductController {
 		return this.productService.getProduct(id);
 	}
 
+
+	/**
+	 * Get a list of products for a product
+	 * @param id The order id
+	 * @return The list of products
+	 */
+	@GetMapping("/order/{id}")
+	@Operation(summary = "Get a list of products for an order", description = "Get a list of products for an order", responses = {
+			@ApiResponse(responseCode = "200", description = "The list of products")
+	})
+	public List<Product> getProductsForOrder(@PathVariable("id") long id) {
+		logger.info("Get a list of orders for a product");
+		return this.productService.getProductsForOrder(id);
+	}
+
+
 	/**
 	 * Create a new product
 	 * 

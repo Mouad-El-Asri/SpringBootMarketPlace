@@ -40,6 +40,15 @@ public class ProductService {
 	}
 
 	/**
+	 * Retrieves a list of products for a given order.
+	 * @param id The ID of the order
+	 * @return List of products
+	 */
+	public List<Product> getProductsForOrder(long id) {
+		return this.productRepository.findByOrdersId(id);
+	}
+
+	/**
 	 * Creates a new product and saves it to the database.
 	 * 
 	 * @param product the product to be created
