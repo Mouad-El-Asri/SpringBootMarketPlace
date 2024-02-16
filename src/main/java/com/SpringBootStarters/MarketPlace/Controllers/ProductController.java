@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +24,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 @RestController
 @RequestMapping(path = "api/v1/products")
 @Tag(name = "Product", description = "The product API")
+@Validated
 public class ProductController {
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	private final ProductService productService;
@@ -58,11 +60,10 @@ public class ProductController {
 	@Operation(summary = "Get a product by its id", description = "Get product data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The product object")
 	})
-	public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") long id) {
+	public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Get product by id");
 		return ResponseEntity.ok(this.productService.getProduct(id));
 	}
-
 
 	/**
 	 * Get a list of products for a product
@@ -73,11 +74,10 @@ public class ProductController {
 	@Operation(summary = "Get a list of products for an order", description = "Get a list of products for an order", responses = {
 			@ApiResponse(responseCode = "200", description = "The list of products")
 	})
-	public ResponseEntity<List<Product>> getProductsForOrder(@PathVariable("id") long id) {
+	public ResponseEntity<List<Product>> getProductsForOrder(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Get a list of orders for a product");
 		return ResponseEntity.ok(this.productService.getProductsForOrder(id));
 	}
-
 
 	/**
 	 * Create a new product
@@ -88,7 +88,7 @@ public class ProductController {
 	@Operation(summary = "Create a new product", description = "Create new product and add it to the database", responses = {
 			@ApiResponse(responseCode = "201", description = "The new product")
 	})
-	public ResponseEntity<Product> createProduct(@NonNull @Valid @RequestBody ProductDto productDto) {
+	public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDto productDto) {
 		logger.info("Create a new product");
 		return ResponseEntity.ok(this.productService.createProduct(productDto));
 	}
@@ -103,7 +103,7 @@ public class ProductController {
 	@Operation(summary = "Update a product by its id", description = "Update  aproduct and save it in the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The updated product")
 	})
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDto productDto) {
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") @Positive(message = "Id must be a positive number") long id, @RequestBody @Valid ProductDto productDto) {
 		logger.info("Update product");
 		return ResponseEntity.ok(this.productService.updateProduct(id, productDto));
 	}
@@ -116,7 +116,7 @@ public class ProductController {
 	@Operation(summary = "Delete a product", description = "Delete a product from the database", responses = {
 			@ApiResponse(responseCode = "200")
 	})
-	public ResponseEntity<Void> deleteProduct(@PathVariable("id") long id) {
+	public ResponseEntity<Void> deleteProduct(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Delete a product");
 		this.productService.deleteProduct(id);
 		return ResponseEntity.ok().build();

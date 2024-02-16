@@ -9,8 +9,6 @@ import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
 import com.SpringBootStarters.MarketPlace.Entities.Product;
 import com.SpringBootStarters.MarketPlace.Repositories.ProductRepository;
 
-import org.springframework.lang.NonNull;
-
 @Service
 public class ProductService {
 	private final ProductRepository productRepository;
@@ -54,7 +52,7 @@ public class ProductService {
 	 * @param product the product to be created
 	 * @return the created product
 	 */
-	public Product createProduct(@NonNull ProductDto productDto) {
+	public Product createProduct(ProductDto productDto) {
 		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
 		if (productOptional.isPresent())
 			throw new IllegalStateException("Product already exists");
