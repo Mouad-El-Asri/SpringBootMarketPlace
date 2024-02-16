@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +42,9 @@ public class OrderController {
 	@Operation(summary = "Get a list of orders", description = "Get a list of all the orders from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "List of all orders")
 	})
-	public List<Orders> getOrders() {
+	public ResponseEntity<List<Orders>> getOrders() {
 		logger.info("Getting all orders");
-		return this.orderService.getOrders();
+		return ResponseEntity.ok(this.orderService.getOrders());
 	}
 
 	/**
@@ -56,9 +57,9 @@ public class OrderController {
 	@Operation(summary = "Get order by its id", description = "Get order using its id from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order data returned")
 	})
-	public Optional<Orders> getOrder(@PathVariable("id") long id) {
+	public ResponseEntity<Optional<Orders>> getOrder(@PathVariable("id") long id) {
 		logger.info("Getting a single order by its id");
-		return this.orderService.getOrder(id);
+		return ResponseEntity.ok(this.orderService.getOrder(id));
 	}
 
 	/**
@@ -70,18 +71,18 @@ public class OrderController {
 	@Operation(summary = "Get orders by product id", description = "Get a list of orders by product id", responses = {
 			@ApiResponse(responseCode = "200", description = "List of orders")
 	})
-	public List<Orders> getOrdersByProductId(@PathVariable("id") long id) {
+	public ResponseEntity<List<Orders>> getOrdersByProductId(@PathVariable("id") long id) {
 		logger.info("Getting a list of orders by product id");
-		return this.orderService.getOrdersByProductId(id);
+		return ResponseEntity.ok(this.orderService.getOrdersByProductId(id));
 	}
 
 	@GetMapping("/customer/{id}")
 	@Operation(summary = "Get orders by customer id", description = "Get a list of orders by customer id", responses = {
 			@ApiResponse(responseCode = "200", description = "List of orders")
 	})
-	public List<Orders> getOrdersByCustomerId(@PathVariable("id") long id) {
+	public ResponseEntity<List<Orders>> getOrdersByCustomerId(@PathVariable("id") long id) {
 		logger.info("Getting a list of orders by customer id");
-		return this.orderService.getOrdersByCustomerId(id);
+		return ResponseEntity.ok(this.orderService.getOrdersByCustomerId(id));
 	}
 
 	/**
@@ -94,9 +95,9 @@ public class OrderController {
 	@Operation(summary = "Create new order for a certain customer", description = "Create a new order for a customer and save it in the database", responses = {
 			@ApiResponse(responseCode = "201", description = "Order created successfully")
 	})
-	public Orders createOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
+	public ResponseEntity<Orders> createOrder(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
 		logger.info("Create new order for customer with id: " + id);
-		return this.orderService.createOrder(id, orderDto);
+		return ResponseEntity.ok(this.orderService.createOrder(id, orderDto));
 	}
 
 
@@ -110,9 +111,9 @@ public class OrderController {
 	@Operation(summary = "Update an order", description = "Update an order by id from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order updated successfully")
 	})
-	public Orders updateOrders(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
+	public ResponseEntity<Orders> updateOrders(@PathVariable("id") long id, @RequestBody OrderDto orderDto) {
 		logger.info("Adding new products to an exsiting order");
-		return this.orderService.updateOrder(id, orderDto);
+		return ResponseEntity.ok(this.orderService.updateOrder(id, orderDto));
 	}
 
 
@@ -124,8 +125,9 @@ public class OrderController {
 	@Operation(summary = "Delete an order", description = "Delete an order by id from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order removed successfully")
 	})
-	public void deleteOrder(@PathVariable("id") long id) {
+	public ResponseEntity<Void> deleteOrder(@PathVariable("id") long id) {
 		logger.info("Delete an order using its id");
 		this.orderService.deleteOrder(id);
+		return ResponseEntity.ok().build();
 	}
 }

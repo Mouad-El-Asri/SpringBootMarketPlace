@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,21 +38,19 @@ public class ProductController {
 
 	/**
 	 * Retrieve a list of all the products
-	 * 
 	 * @return The list of products
 	 */
 	@GetMapping("/")
 	@Operation(summary = "Get all products", description = "Get all products data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The list of products")
 	})
-	public List<Product> getProducts() {
+	public ResponseEntity<List<Product>> getProducts() {
 		logger.info("Get a list of all products");
-		return this.productService.getProducts();
+		return ResponseEntity.ok(this.productService.getProducts());
 	}
 
 	/**
 	 * Get product by id
-	 * 
 	 * @param id The product id
 	 * @return The product object
 	 */
@@ -59,9 +58,9 @@ public class ProductController {
 	@Operation(summary = "Get a product by its id", description = "Get product data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The product object")
 	})
-	public Optional<Product> getProduct(@PathVariable("id") long id) {
+	public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") long id) {
 		logger.info("Get product by id");
-		return this.productService.getProduct(id);
+		return ResponseEntity.ok(this.productService.getProduct(id));
 	}
 
 
@@ -74,15 +73,14 @@ public class ProductController {
 	@Operation(summary = "Get a list of products for an order", description = "Get a list of products for an order", responses = {
 			@ApiResponse(responseCode = "200", description = "The list of products")
 	})
-	public List<Product> getProductsForOrder(@PathVariable("id") long id) {
+	public ResponseEntity<List<Product>> getProductsForOrder(@PathVariable("id") long id) {
 		logger.info("Get a list of orders for a product");
-		return this.productService.getProductsForOrder(id);
+		return ResponseEntity.ok(this.productService.getProductsForOrder(id));
 	}
 
 
 	/**
 	 * Create a new product
-	 * 
 	 * @param productDto The Product DTO containg the new product information
 	 * @return The new created product
 	 */
@@ -90,14 +88,13 @@ public class ProductController {
 	@Operation(summary = "Create a new product", description = "Create new product and add it to the database", responses = {
 			@ApiResponse(responseCode = "201", description = "The new product")
 	})
-	public Product createProduct(@NonNull @Valid @RequestBody ProductDto productDto) {
+	public ResponseEntity<Product> createProduct(@NonNull @Valid @RequestBody ProductDto productDto) {
 		logger.info("Create a new product");
-		return this.productService.createProduct(productDto);
+		return ResponseEntity.ok(this.productService.createProduct(productDto));
 	}
 
 	/**
 	 * Updates a product by its id and saves it in the database
-	 * 
 	 * @param id         The id of the product to be updated
 	 * @param productDto The DTO containing product information
 	 * @return The updated product
@@ -106,22 +103,22 @@ public class ProductController {
 	@Operation(summary = "Update a product by its id", description = "Update  aproduct and save it in the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The updated product")
 	})
-	public Product updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDto productDto) {
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDto productDto) {
 		logger.info("Update product");
-		return this.productService.updateProduct(id, productDto);
+		return ResponseEntity.ok(this.productService.updateProduct(id, productDto));
 	}
 
 	/**
 	 * Deletes a product with the specified ID.
-	 * 
 	 * @param id the ID of the product to delete
 	 */
 	@DeleteMapping("/delete/{id}")
 	@Operation(summary = "Delete a product", description = "Delete a product from the database", responses = {
 			@ApiResponse(responseCode = "200")
 	})
-	public void deleteProduct(@PathVariable("id") long id) {
+	public ResponseEntity<Void> deleteProduct(@PathVariable("id") long id) {
 		logger.info("Delete a product");
 		this.productService.deleteProduct(id);
+		return ResponseEntity.ok().build();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,21 +37,19 @@ public class CustomerController {
 
 	/**
 	 * Retrieves a list of customers.
-	 * 
 	 * @return The list of customers
 	 */
 	@GetMapping("/")
 	@Operation(summary = "Get all customers", description = "Get all customers data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The list of customers")
 	})
-	public List<Customer> getCustomers() {
+	public ResponseEntity<List<Customer>> getCustomers() {
 		logger.info("Getting all customers");
-		return this.customerService.getCustomers();
+		return ResponseEntity.ok(this.customerService.getCustomers());
 	}
 
 	/**
 	 * Get customer by id
-	 * 
 	 * @param id The customer id
 	 * @return The customer instance
 	 */
@@ -58,9 +57,9 @@ public class CustomerController {
 	@Operation(summary = "Get customer by id", description = "Get customer data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The customer")
 	})
-	public Optional<Customer> getCustomer(@PathVariable("id") Long id) {
+	public ResponseEntity<Optional<Customer>> getCustomer(@PathVariable("id") Long id) {
 		logger.info("Getting customer by id");
-		return this.customerService.getCustomer(id);
+		return ResponseEntity.ok(this.customerService.getCustomer(id));
 	}
 
 	/**
@@ -73,14 +72,13 @@ public class CustomerController {
 	@Operation(summary = "Create a new customer", description = "Create a new customer in the database", responses = {
 			@ApiResponse(responseCode = "201", description = "The new created customer")
 	})
-	public Customer createCustomer(@Valid @RequestBody CustomerDto customerDto) {
+	public ResponseEntity<Customer> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
 		logger.info("Creating a new customer");
-		return this.customerService.createCustomer(customerDto);
+		return ResponseEntity.ok(this.customerService.createCustomer(customerDto));
 	}
 
 	/**
 	 * Update a customer
-	 * 
 	 * @param id          The customer's id
 	 * @param customerDto The customer DTO containing customer information to be
 	 *                    updated
@@ -90,22 +88,22 @@ public class CustomerController {
 	@Operation(summary = "Update a customer", description = "Update a customer in the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The updated customer")
 	})
-	public Customer updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerDto customerDto) {
+	public ResponseEntity<Customer> updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerDto customerDto) {
 		logger.info("Update customer by id");
-		return this.customerService.updateCustomer(id, customerDto);
+		return ResponseEntity.ok(this.customerService.updateCustomer(id, customerDto));
 	}
 
 	/**
 	 * Delete a customer
-	 * 
 	 * @param id The customer's id to be deleted
 	 */
 	@DeleteMapping("/delete/{id}")
 	@Operation(summary = "Delete a customer", description = "Delete a customer from the database", responses = {
 			@ApiResponse(responseCode = "200")
 	})
-	public void deletedCustomer(@PathVariable("id") long id) {
-		logger.info("Delete a customer");
+	public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id) {
+		logger.info("Delete customer by id");
 		this.customerService.deleteCustomer(id);
+		return ResponseEntity.ok().build();
 	}
 }
