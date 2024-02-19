@@ -14,6 +14,8 @@ import com.SpringBootStarters.MarketPlace.Repositories.CustomerRepository;
 import com.SpringBootStarters.MarketPlace.Repositories.OrderRepository;
 import com.SpringBootStarters.MarketPlace.Repositories.ProductRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class OrderService {
 	private final OrderRepository orderRepository;
@@ -40,8 +42,8 @@ public class OrderService {
 	 * @return An Optional containing the order, or an empty Optional if no order is
 	 *         found
 	 */
-	public Optional<Orders> getOrder(long id) {
-		return this.orderRepository.findById(id);
+	public Orders getOrder(long id) {
+		return this.orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found with Id : " + id));
 	}
 
 	/**
@@ -50,7 +52,22 @@ public class OrderService {
 	 * @return A list of Order objects representing the orders for the product
 	 */
 	public List<Orders> getOrdersByProductId(long id) {
-		return this.orderRepository.findByProductsId(id);
+		List<Orders> orders = this.orderRepository.findByProductsId(id);
+		if (orders.isEmpty())
+			throw new EntityNotFoundException("No orders found for product with id " + id);
+		return orders;
+	}
+
+	/**
+	 * Retrieves a list of orders for a given customer.
+	 * @param id The ID of the customer
+	 * @return A list of Order objects representing the orders for the customer
+	 */
+	public List<Orders> getOrdersByCustomerId(long id) {
+		List<Orders> orders = this.orderRepository.findByCustomerId(id);
+		if (orders.isEmpty())
+			throw new EntityNotFoundException("No orders found for customer with id " + id);
+		return orders;
 	}
 
 	/**
@@ -60,22 +77,19 @@ public class OrderService {
 	 * @return The created order
 	 */
 	public Orders createOrder(long customerId, OrderDto orderDto) {
-		Optional<Customer> customerOptional = this.customerRepository.findById(customerId);
+		if (orderDto == null)
+			throw new IllegalArgumentException("Order can't be null");
+		Customer customer = this.customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found with Id : " + customerId));
 		List<Product> products = this.productRepository.findAllById(orderDto.getProductIds());
-		if (customerOptional.isPresent()) {
-			Customer customer = customerOptional.get();
-			Orders newOrder = new Orders();
-			newOrder.setCustomer(customer);
-			BigDecimal totalAmount = BigDecimal.ZERO;
-			for (Product product : products) {
-				newOrder.getProducts().add(product);
-				totalAmount = totalAmount.add(product.getPrice());
-			}
-			newOrder.setTotalAmount(totalAmount);
-			return this.orderRepository.save(newOrder);
-		} else {
-			throw new IllegalStateException("Customer not found with Id : " + customerId);
+		Orders newOrder = new Orders();
+		newOrder.setCustomer(customer);
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		for (Product product : products) {
+			newOrder.getProducts().add(product);
+			totalAmount = totalAmount.add(product.getPrice());
 		}
+		newOrder.setTotalAmount(totalAmount);
+		return this.orderRepository.save(newOrder);
 	}
 
 	/**
@@ -85,22 +99,19 @@ public class OrderService {
 	 * @return The updated order
 	 */
 	public Orders updateOrder(long id, OrderDto orderDto) {
-		Optional<Orders> orderOptional = this.orderRepository.findById(id);
+		if (orderDto == null)
+			throw new IllegalArgumentException("Order can't be null");
+		Orders existingOrder = this.orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found with Id : " + id));
 		List<Product> products = this.productRepository.findAllById(orderDto.getProductIds());
-		if (orderOptional.isPresent()) {
-			Orders existingOrder = orderOptional.get();
-			BigDecimal totalAmount = existingOrder.getTotalAmount();
-			for (Product product : products) {
-				if (!existingOrder.getProducts().contains(product)) {
-					existingOrder.getProducts().add(product);
-					totalAmount = totalAmount.add(product.getPrice());
-				}
+		BigDecimal totalAmount = existingOrder.getTotalAmount();
+		for (Product product : products) {
+			if (!existingOrder.getProducts().contains(product)) {
+				existingOrder.getProducts().add(product);
+				totalAmount = totalAmount.add(product.getPrice());
 			}
-			existingOrder.setTotalAmount(totalAmount);
-			return this.orderRepository.save(existingOrder);
-		} else {
-			throw new IllegalStateException("Order not found with Id : " + id);
 		}
+		existingOrder.setTotalAmount(totalAmount);
+		return this.orderRepository.save(existingOrder);
 	}
 
 	/**
@@ -108,15 +119,9 @@ public class OrderService {
 	 * @param id The ID of the order to delete
 	 */
 	public void deleteOrder(long id) {
+		boolean exists = this.orderRepository.existsById(id);
+		if (!exists)
+			throw new EntityNotFoundException("Order not found with Id : " + id);
 		this.orderRepository.deleteById(id);
-	}
-
-	/**
-	 * Retrieves a list of orders for a given customer.
-	 * @param id The ID of the customer
-	 * @return A list of Order objects representing the orders for the customer
-	 */
-	public List<Orders> getOrdersByCustomerId(long id) {
-		return this.orderRepository.findByCustomerId(id);
 	}
 }

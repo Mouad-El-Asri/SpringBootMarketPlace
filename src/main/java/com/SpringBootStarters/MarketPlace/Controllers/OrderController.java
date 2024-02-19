@@ -61,7 +61,7 @@ public class OrderController {
 	@Operation(summary = "Get order by its id", description = "Get order using its id from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "Order data returned")
 	})
-	public ResponseEntity<Optional<Orders>> getOrder(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
+	public ResponseEntity<Orders> getOrder(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Getting a single order by its id");
 		return ResponseEntity.ok(this.orderService.getOrder(id));
 	}

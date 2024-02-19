@@ -60,7 +60,7 @@ public class CustomerController {
 	@Operation(summary = "Get customer by id", description = "Get customer data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The customer")
 	})
-	public ResponseEntity<Optional<Customer>> getCustomer(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
+	public ResponseEntity<Customer> getCustomer(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Getting customer by id");
 		return ResponseEntity.ok(this.customerService.getCustomer(id));
 	}

@@ -60,7 +60,7 @@ public class ProductController {
 	@Operation(summary = "Get a product by its id", description = "Get product data from the database", responses = {
 			@ApiResponse(responseCode = "200", description = "The product object")
 	})
-	public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
+	public ResponseEntity<Product> getProduct(@PathVariable("id") @Positive(message = "Id must be a positive number") long id) {
 		logger.info("Get product by id");
 		return ResponseEntity.ok(this.productService.getProduct(id));
 	}

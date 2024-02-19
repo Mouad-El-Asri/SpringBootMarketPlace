@@ -9,6 +9,8 @@ import com.SpringBootStarters.MarketPlace.DTOs.CustomerDto;
 import com.SpringBootStarters.MarketPlace.Entities.Customer;
 import com.SpringBootStarters.MarketPlace.Repositories.CustomerRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class CustomerService {
 	private final CustomerRepository customerRepository;
@@ -31,8 +33,8 @@ public class CustomerService {
 	 * @param id The customer's id
 	 * @return The customer instance
 	 */
-	public Optional<Customer> getCustomer(long id) {
-		return this.customerRepository.findById(id);
+	public Customer getCustomer(long id) {
+		return this.customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer with id " + id + " doesn't exist"));
 	}
 
 	/**
@@ -42,6 +44,8 @@ public class CustomerService {
 	 * @return The new customer
 	 */
 	public Customer createCustomer(CustomerDto customerDto) {
+		if (customerDto == null)
+			throw new IllegalArgumentException("Customer can't be null");
 		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customerDto.getEmail());
 		if (customerOptional.isPresent())
 			throw new IllegalStateException("Email already taken");
@@ -57,7 +61,7 @@ public class CustomerService {
 	public void deleteCustomer(long id) {
 		boolean exists = this.customerRepository.existsById(id);
 		if (!exists)
-			throw new IllegalStateException("Customer with id " + id + " doesn't exist");
+			throw new EntityNotFoundException("Customer with id " + id + " doesn't exist");
 		this.customerRepository.deleteById(id);
 	}
 
@@ -71,8 +75,11 @@ public class CustomerService {
 	 */
 	public Customer updateCustomer(long id, CustomerDto customerDto) {
 		if (customerDto == null)
-			throw new IllegalStateException("Customer can't be null");
-		Customer existingCustomer = this.customerRepository.findById(id).orElse(null);
+			throw new IllegalArgumentException("Customer can't be null");
+		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customerDto.getEmail());
+		if (customerOptional.isPresent())
+			throw new IllegalStateException("Email already taken");
+		Customer existingCustomer = this.customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer with id " + id + " doesn't exist"));
 		existingCustomer.setFirstName(customerDto.getFirstName());
 		existingCustomer.setLastName(customerDto.getLastName());
 		existingCustomer.setEmail(customerDto.getEmail());

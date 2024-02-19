@@ -9,6 +9,8 @@ import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
 import com.SpringBootStarters.MarketPlace.Entities.Product;
 import com.SpringBootStarters.MarketPlace.Repositories.ProductRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ProductService {
 	private final ProductRepository productRepository;
@@ -33,8 +35,8 @@ public class ProductService {
 	 * @return an Optional containing the product if found, or an empty Optional if
 	 *         not found
 	 */
-	public Optional<Product> getProduct(long id) {
-		return this.productRepository.findById(id);
+	public Product getProduct(long id) {
+		return this.productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + " doesn't exist"));
 	}
 
 	/**
@@ -43,7 +45,10 @@ public class ProductService {
 	 * @return List of products
 	 */
 	public List<Product> getProductsForOrder(long id) {
-		return this.productRepository.findByOrdersId(id);
+		List<Product> products = this.productRepository.findByOrdersId(id);
+		if (products.isEmpty())
+			throw new EntityNotFoundException("No products found for order with id " + id);
+		return products;
 	}
 
 	/**
@@ -53,9 +58,11 @@ public class ProductService {
 	 * @return the created product
 	 */
 	public Product createProduct(ProductDto productDto) {
+		if (productDto == null)
+			throw new IllegalArgumentException("Product can't be null");
 		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
 		if (productOptional.isPresent())
-			throw new IllegalStateException("Product already exists");
+			throw new IllegalStateException("Product name already taken");
 		Product product = new Product(productDto);
 		return this.productRepository.save(product);
 	}
@@ -70,9 +77,12 @@ public class ProductService {
 	 */
 	public Product updateProduct(long id, ProductDto productDto) {
 		if (productDto == null)
-			throw new IllegalStateException("Product can't be null");
+			throw new IllegalArgumentException("Product can't be null");
 		Product existingProduct = this.productRepository.findById(id).orElse(null);
 		existingProduct.setProductName(productDto.getProductName());
+		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
+		if (productOptional.isPresent())
+			throw new IllegalStateException("Product name already taken");
 		existingProduct.setPrice(productDto.getPrice());
 		return this.productRepository.save(existingProduct);
 	}
@@ -83,6 +93,9 @@ public class ProductService {
 	 * @param id the ID of the product to be deleted
 	 */
 	public void deleteProduct(long id) {
+		boolean exists = this.productRepository.existsById(id);
+		if (!exists)
+			throw new EntityNotFoundException("Product with id " + id + " doesn't exist");
 		this.productRepository.deleteById(id);
 	}
 }

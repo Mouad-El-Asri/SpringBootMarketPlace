@@ -51,6 +51,20 @@ public class Customer {
 	private int age;
 
 	/**
+	 * Constructs a new Customer object based on the provided information.
+	 * @param firstName The customer first name
+	 * @param lastName The customer last name
+	 * @param email The customer email
+	 * @param age The customer age
+	 */
+	public Customer(String firstName, String lastName, String email, int age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.age = age;
+	}
+
+	/**
 	 * Constructs a new Customer object based on the provided CustomerDto.
 	 * @param customerDto The CustomerDto object containing the customer information.
 	 */
