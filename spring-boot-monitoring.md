@@ -175,6 +175,44 @@ We can create custom dashboards or use existing ones available in the Grafana da
 The Spring Boot APM Dashboard provides insights into the performance and health of Spring Boot applications.
 
 ![Grafana Dashboard](imgs/grafana-dashboard.png)
+*Note: We can see above the Spring Boot APM Dashboard showing various metrics and visualizations for our Spring Boot application.*
+
+### Email Alerts
+
+Grafana allows us to configure email alerts to notify us when certain conditions are met.
+
+1. **Locate file**:
+	- The file path is /etc/grafana/grafana.ini
+
+2. **Configure SMTP Settings**:
+	- Locate the SMTP settings in the configuration file and add the following configuration:
+
+	```ini
+	[smtp]
+	enabled = true
+	host = smtp.gmail.com:465
+	user = contact@gmail.com
+	password = ********
+	from_address = contact@gmail.com
+	from_name = Grafana
+	```
+	*Note: replace the `host`, `user`, `password`, and `from_address` with the appropriate values for our SMTP server.*
+	*Note: We can generate an app password for our Gmail account and use it as the password in the configuration like the example below, to avoid using the actual account password.*
+	![Gmail App Password](imgs/gmail-app-password.png)
+
+3. **Restart Grafana**:
+	- After making the changes, we should restart the Grafana server to apply the new configuration.
+	```bash
+	sudo systemctl restart grafana-server
+	```
+
+4. **Configure Alert Contact Point**:
+	- In Grafana, navigate to "Alerting" > "Contact points" and add a new contact point with the email address to receive alerts.
+	- After that, we can test the email alert by clicking on "Test" in the contact point configuration.
+	- We should receive an email notification like the one below if the configuration is correct.
+
+	![Email Alert](imgs/email-alert.png)
+	*Note: We can see above the email alert notification received from Grafana.*
 
 # Conclusion
 
