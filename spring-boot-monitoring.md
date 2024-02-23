@@ -208,11 +208,26 @@ Grafana allows us to configure email alerts to notify us when certain conditions
 
 4. **Configure Alert Contact Point**:
 	- In Grafana, navigate to "Alerting" > "Contact points" and add a new contact point with the email address to receive alerts.
+
+	![Email Alert](imgs/email-alert-configuration.png)
+	*Note: We can see above the configuration of an email alert contact point in Grafana.*
+
 	- After that, we can test the email alert by clicking on "Test" in the contact point configuration.
 	- We should receive an email notification like the one below if the configuration is correct.
 
 	![Email Alert](imgs/email-alert.png)
 	*Note: We can see above the email alert notification received from Grafana.*
+
+5. **Create an Alert**:
+	- After that, we can create an alert for a dashboard panel by clicking on "Create Alert" in the panel settings.
+
+	![Create Alert](imgs/create-alert.png)
+
+	- We can configure the alert conditions to receive the alert.
+
+	- After that, we can test the alert by clicking on "Test Rule" in the alert configuration.
+
+	- We should receive an email notification if the alert condition is met.
 
 # Conclusion
 
