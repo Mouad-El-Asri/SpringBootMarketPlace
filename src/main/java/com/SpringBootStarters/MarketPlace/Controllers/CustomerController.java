@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,7 +76,7 @@ public class CustomerController {
 	})
 	public ResponseEntity<Customer> createCustomer(@RequestBody @Valid CustomerDto customerDto) {
 		logger.info("Creating a new customer");
-		return ResponseEntity.ok(this.customerService.createCustomer(customerDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.customerService.createCustomer(customerDto));
 	}
 
 	/**
