@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,6 +73,25 @@ public class MarketPlaceProductControllerTests {
 
 		// Verify
 		Mockito.verify(productService, Mockito.times(1)).getProduct(1L);
+	}
+
+	@Test
+	public void testGetProductsForOrder() {
+		logger.info("Testing getProductForOrder method");
+
+		List<Product> products = Arrays.asList(
+			new Product(1L, "Nike air jordan 1 low", BigDecimal.valueOf(1500)),
+			new Product(2L, "Nike air jordan 2 high", BigDecimal.valueOf(1700))
+		);
+
+		// Testing the retrieval of a list of products for an order
+		Mockito.when(productService.getProductsForOrder(1L)).thenReturn(products);
+		ResponseEntity<List<Product>> responseEntity = productController.getProductsForOrder(1L);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(products, responseEntity.getBody());
+
+		// Verify
+		Mockito.verify(productService, Mockito.times(1)).getProductsForOrder(1L);
 	}
 
 	@Test

@@ -78,7 +78,7 @@ public class ProductService {
 	public Product updateProduct(long id, ProductDto productDto) {
 		if (productDto == null)
 			throw new IllegalArgumentException("Product can't be null");
-		Product existingProduct = this.productRepository.findById(id).orElse(null);
+		Product existingProduct = this.productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + " doesn't exist"));
 		existingProduct.setProductName(productDto.getProductName());
 		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
 		if (productOptional.isPresent())

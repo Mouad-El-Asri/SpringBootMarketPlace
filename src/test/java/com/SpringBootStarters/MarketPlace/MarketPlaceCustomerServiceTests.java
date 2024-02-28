@@ -88,14 +88,8 @@ class MarketPlaceCustomerServiceTests {
 
 		Mockito.when(customerRepository.findByEmail("john@example.com")).thenReturn(Optional.empty());
 		Mockito.when(customerRepository.save(Mockito.any(Customer.class))).thenReturn(customer);
-
 		Customer result = customerService.createCustomer(customerDto);
-
-		assertNotNull(result);
-		assertEquals(customerDto.getFirstName(), result.getFirstName());
-		assertEquals(customerDto.getLastName(), result.getLastName());
-		assertEquals(customerDto.getEmail(), result.getEmail());
-		assertEquals(customerDto.getAge(), result.getAge());
+		assertEquals(customer, result);
 
 		// Testing the exception when the customer already exists
 		Mockito.when(customerRepository.findByEmail("john@example.com")).thenReturn(Optional.of(customer));
@@ -121,21 +115,23 @@ class MarketPlaceCustomerServiceTests {
 		// Testing the update of an existing customer
 		Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
 		Mockito.when(customerRepository.save(Mockito.any(Customer.class))).thenReturn(customer);
-		
 		Customer result = customerService.updateCustomer(1L, customerDto);
+		assertEquals(customer, result);
 
-		assertNotNull(result);
-		assertEquals(customerDto.getFirstName(), result.getFirstName());
-		assertEquals(customerDto.getLastName(), result.getLastName());
-		assertEquals(customerDto.getEmail(), result.getEmail());
-		assertEquals(customerDto.getAge(), result.getAge());
+		// Testing the update of a customer with an existing email
+		CustomerDto customerDto2 = new CustomerDto("John", "Doe", "joe@example.com", 30);
+		Mockito.when(customerRepository.findByEmail("joe@example.com")).thenThrow(new IllegalStateException("Email already taken"));
+		IllegalStateException thrown = assertThrowsExactly(IllegalStateException.class, () -> customerService.updateCustomer(1L, customerDto2));
+		assertTrue(thrown.getMessage().contains("Email already taken"));
 
 		// Testing the exception when the customer doesn't exist
 		Mockito.when(customerRepository.findById(2L)).thenReturn(Optional.empty());
-		assertThrowsExactly(EntityNotFoundException.class, () -> customerService.updateCustomer(2L, customerDto));
+		EntityNotFoundException thrown1 = assertThrowsExactly(EntityNotFoundException.class, () -> customerService.updateCustomer(2L, customerDto));
+		assertTrue(thrown1.getMessage().contains("Customer with id 2 doesn't exist"));
 
 		// Testing the exception when the customerDto is null
-		assertThrowsExactly(IllegalArgumentException.class, () -> customerService.updateCustomer(1L, null));
+		IllegalArgumentException thrown2 = assertThrowsExactly(IllegalArgumentException.class, () -> customerService.updateCustomer(1L, null));
+		assertTrue(thrown2.getMessage().contains("Customer can't be null"));
 
 		// Verify
 		Mockito.verify(customerRepository, Mockito.times(2)).findById(Mockito.anyLong());
