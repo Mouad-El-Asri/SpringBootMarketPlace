@@ -15,7 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -53,11 +53,27 @@ public class Product {
 	private List<Orders> orders = new ArrayList<>();
 
 	/**
+	 * Constructs a new Product object.
+	 * 
+	 * @param id         The unique identifier of the product.
+	 * @param productName The name of the product.
+	 * @param price      The price of the product.
+	 */
+	public Product(
+			@Positive(message = "Id must be a positive number") long id,
+			@NotBlank(message = "Product name must not be blank") @Size(min = 1, max = 100, message = "Product name must be between 1 and 100 characters") String productName,
+			@Positive(message = "Price must be a positive number") BigDecimal price) {
+		this.id = id;
+		this.productName = productName;
+		this.price = price;
+	}
+
+	/**
 	 * Constructs a new Product object based on the provided ProductDto.
 	 * 
 	 * @param productDto The ProductDto object containing the Product information.
 	 */
-	public Product(ProductDto productDto) {
+	public Product(@Valid ProductDto productDto) {
 		this.productName = productDto.getProductName();
 		this.price = productDto.getPrice();
 	}

@@ -34,11 +34,11 @@ class MarketPlaceCustomerControllerTests {
 
 	@BeforeAll
 	public static void setUp() {
-		logger.info("Starting tests");
+		logger.info("Starting customer controller tests");
 	}
 
 	@Test
-	void testGetCustomers() {
+	public void testGetCustomers() {
 		logger.info("Testing getCustomers method");
 
 		// Testing the retrieval of a list of customers
@@ -57,7 +57,7 @@ class MarketPlaceCustomerControllerTests {
 	}
 
 	@Test
-	void testGetCustomer() {
+	public void testGetCustomer() {
 		logger.info("Testing getCustomer method");
 
 		// Testing the retrieval of a customer by id
@@ -73,7 +73,7 @@ class MarketPlaceCustomerControllerTests {
 	}
 
 	@Test
-	void testCreateCustomer() {
+	public void testCreateCustomer() {
 		logger.info("Testing createCustomer method");
 
 		CustomerDto customerDto = new CustomerDto("John", "Doe", "doe@example.com", 30);
@@ -90,7 +90,7 @@ class MarketPlaceCustomerControllerTests {
 	}
 
 	@Test
-	void testUpdateCustomer() {
+	public void testUpdateCustomer() {
 		logger.info("Testing updateCustomer method");
 
 		CustomerDto customerDto = new CustomerDto("John", "Doe", "doe@example.com", 30);
@@ -107,7 +107,7 @@ class MarketPlaceCustomerControllerTests {
 	}
 
 	@Test
-	void testDeleteCustomer() {
+	public void testDeleteCustomer() {
 		logger.info("Testing deleteCustomer method");
 
 		// Testing the deletion of an existing customer
@@ -123,6 +123,6 @@ class MarketPlaceCustomerControllerTests {
 
 	@AfterAll
 	public static void tearDown() {
-		logger.info("Finishing tests");
+		logger.info("Finishing customer controller tests");
 	}
 }

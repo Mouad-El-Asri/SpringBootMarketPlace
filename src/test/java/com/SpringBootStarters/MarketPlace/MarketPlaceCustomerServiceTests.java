@@ -38,11 +38,11 @@ class MarketPlaceCustomerServiceTests {
 
 	@BeforeAll
 	public static void setUp() {
-		logger.info("Starting tests");
+		logger.info("Starting customer service tests");
 	}
 
 	@Test
-	void testGetCustomers() {
+	public void testGetCustomers() {
 		logger.info("Testing getCustomers method");
 
 		// Testing the retrieval of a list of customers
@@ -59,7 +59,7 @@ class MarketPlaceCustomerServiceTests {
 	}
 
 	@Test
-	void testGetCustomer() {
+	public void testGetCustomer() {
 		logger.info("Testing getCustomer method");
 
 		Customer customer = new Customer(1L, "John", "Doe", "john@example.com", 25);
@@ -79,7 +79,7 @@ class MarketPlaceCustomerServiceTests {
 	}
 
 	@Test
-	void testCreateCustomer() {
+	public void testCreateCustomer() {
 		logger.info("Testing createCustomer method");
 		
 		// Testing the creation of a new customer
@@ -112,16 +112,16 @@ class MarketPlaceCustomerServiceTests {
 	}
 
 	@Test
-	void testUpdateCustomer() {
+	public void testUpdateCustomer() {
 		logger.info("Testing updateCustomer method");
 		
-		// Testing the update of an existing customer
 		CustomerDto customerDto = new CustomerDto("John", "Doe", "doe@example.com", 30);
 		Customer customer = new Customer(1L, "John", "Doe", "john@example.com", 25);
-
+		
+		// Testing the update of an existing customer
 		Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
 		Mockito.when(customerRepository.save(Mockito.any(Customer.class))).thenReturn(customer);
-
+		
 		Customer result = customerService.updateCustomer(1L, customerDto);
 
 		assertNotNull(result);
@@ -143,7 +143,7 @@ class MarketPlaceCustomerServiceTests {
 	}
 
 	@Test
-	void testDeleteCustomer() {
+	public void testDeleteCustomer() {
 		logger.info("Testing deleteCustomer method");
 
 		// Testing the deletion of an existing customer
@@ -162,6 +162,6 @@ class MarketPlaceCustomerServiceTests {
 
 	@AfterAll
 	public static void tearDown() {
-		logger.info("Finishing tests");
+		logger.info("Finishing customer service tests");
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,7 +90,7 @@ public class ProductController {
 	})
 	public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDto productDto) {
 		logger.info("Create a new product");
-		return ResponseEntity.ok(this.productService.createProduct(productDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.productService.createProduct(productDto));
 	}
 
 	/**
