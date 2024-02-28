@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -105,7 +107,7 @@ public class OrderController {
 	})
 	public ResponseEntity<Orders> createOrder(@PathVariable("id") @Positive(message = "Id must be a positive number") long id, @RequestBody @Valid OrderDto orderDto) {
 		logger.info("Create new order for customer with id: " + id);
-		return ResponseEntity.ok(this.orderService.createOrder(id, orderDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.orderService.createOrder(id, orderDto));
 	}
 
 	/**

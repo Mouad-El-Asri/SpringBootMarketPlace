@@ -52,6 +52,10 @@ public class Orders {
 	)
 	private List<Product> products = new ArrayList<>();
 
+	public Orders(long id) {
+		this.id = id;
+	}
+
 	/**
 	 * Constructs a new Order object with the current date and time
 	 */
