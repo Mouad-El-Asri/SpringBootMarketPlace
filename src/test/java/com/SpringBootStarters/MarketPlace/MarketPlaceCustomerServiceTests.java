@@ -82,10 +82,10 @@ class MarketPlaceCustomerServiceTests {
 	public void testCreateCustomer() {
 		logger.info("Testing createCustomer method");
 		
-		// Testing the creation of a new customer
 		CustomerDto customerDto = new CustomerDto("John", "Doe", "john@example.com", 25);
 		Customer customer = new Customer(1L, "John", "Doe", "john@example.com", 25);
-
+		
+		// Testing the creation of a new customer
 		Mockito.when(customerRepository.findByEmail("john@example.com")).thenReturn(Optional.empty());
 		Mockito.when(customerRepository.save(Mockito.any(Customer.class))).thenReturn(customer);
 		Customer result = customerService.createCustomer(customerDto);
