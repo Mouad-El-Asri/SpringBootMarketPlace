@@ -3,6 +3,7 @@ package com.SpringBootStarters.MarketPlace.Services;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.SpringBootStarters.MarketPlace.DTOs.CustomerDto;
@@ -14,9 +15,11 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class CustomerService {
 	private final CustomerRepository customerRepository;
+	private final ModelMapper modelMapper;
 
-	public CustomerService(CustomerRepository customerRepository) {
+	public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
 		this.customerRepository = customerRepository;
+		this.modelMapper = modelMapper;
 	}
 
 	/**
@@ -49,7 +52,7 @@ public class CustomerService {
 		Optional<Customer> customerOptional = this.customerRepository.findByEmail(customerDto.getEmail());
 		if (customerOptional.isPresent())
 			throw new IllegalStateException("Email already taken");
-		Customer customer = new Customer(customerDto);
+		Customer customer = modelMapper.map(customerDto, Customer.class);
 		return this.customerRepository.save(customer);
 	}
 
@@ -80,10 +83,7 @@ public class CustomerService {
 		if (customerOptional.isPresent())
 			throw new IllegalStateException("Email already taken");
 		Customer existingCustomer = this.customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer with id " + id + " doesn't exist"));
-		existingCustomer.setFirstName(customerDto.getFirstName());
-		existingCustomer.setLastName(customerDto.getLastName());
-		existingCustomer.setEmail(customerDto.getEmail());
-		existingCustomer.setAge(customerDto.getAge());
+		modelMapper.map(customerDto, existingCustomer);
 		return this.customerRepository.save(existingCustomer);
 	}
 }

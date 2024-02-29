@@ -63,15 +63,4 @@ public class Customer {
 		this.email = email;
 		this.age = age;
 	}
-
-	/**
-	 * Constructs a new Customer object based on the provided CustomerDto.
-	 * @param customerDto The CustomerDto object containing the customer information.
-	 */
-	public Customer(CustomerDto customerDto) {
-		this.firstName = customerDto.getFirstName();
-		this.lastName = customerDto.getLastName();
-		this.email = customerDto.getEmail();
-		this.age = customerDto.getAge();
-	}
 }

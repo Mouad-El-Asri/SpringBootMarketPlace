@@ -67,14 +67,4 @@ public class Product {
 		this.productName = productName;
 		this.price = price;
 	}
-
-	/**
-	 * Constructs a new Product object based on the provided ProductDto.
-	 * 
-	 * @param productDto The ProductDto object containing the Product information.
-	 */
-	public Product(@Valid ProductDto productDto) {
-		this.productName = productDto.getProductName();
-		this.price = productDto.getPrice();
-	}
 }

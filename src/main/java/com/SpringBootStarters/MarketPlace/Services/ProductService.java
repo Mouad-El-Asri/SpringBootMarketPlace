@@ -3,6 +3,7 @@ package com.SpringBootStarters.MarketPlace.Services;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.SpringBootStarters.MarketPlace.DTOs.ProductDto;
@@ -14,9 +15,11 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class ProductService {
 	private final ProductRepository productRepository;
+	private final ModelMapper modelMapper;
 
-	public ProductService(ProductRepository productRepository) {
+	public ProductService(ProductRepository productRepository, ModelMapper modelMapper) {
 		this.productRepository = productRepository;
+		this.modelMapper = modelMapper;
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class ProductService {
 		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
 		if (productOptional.isPresent())
 			throw new IllegalStateException("Product name already taken");
-		Product product = new Product(productDto);
+		Product product = modelMapper.map(productDto, Product.class);
 		return this.productRepository.save(product);
 	}
 
@@ -79,11 +82,10 @@ public class ProductService {
 		if (productDto == null)
 			throw new IllegalArgumentException("Product can't be null");
 		Product existingProduct = this.productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + " doesn't exist"));
-		existingProduct.setProductName(productDto.getProductName());
 		Optional<Product> productOptional = this.productRepository.findByProductName(productDto.getProductName());
 		if (productOptional.isPresent())
 			throw new IllegalStateException("Product name already taken");
-		existingProduct.setPrice(productDto.getPrice());
+		modelMapper.map(productDto, existingProduct);
 		return this.productRepository.save(existingProduct);
 	}
 
