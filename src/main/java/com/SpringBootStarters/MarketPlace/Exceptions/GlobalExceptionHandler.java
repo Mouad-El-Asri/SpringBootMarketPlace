@@ -1,4 +1,4 @@
-package com.SpringBootStarters.MarketPlace.exceptions;
+package com.SpringBootStarters.MarketPlace.Exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
